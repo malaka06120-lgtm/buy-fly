@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gigastore/core/constants/colors.dart';
+import 'package:gigastore/features/auth/login/cubit/login_cubit.dart';
 
 class LoginButton
     extends StatelessWidget {
@@ -7,9 +9,14 @@ class LoginButton
   final GlobalKey<FormState>
       formKey;
 
+  final TextEditingController emailController;
+  final TextEditingController passController;
+
   const LoginButton({
     super.key,
     required this.formKey,
+    required this.emailController,
+    required this.passController,
   });
 
   @override
@@ -26,13 +33,11 @@ class LoginButton
               AppColors.primary,
         ),
         onPressed: () {
-          if (formKey
-              .currentState!
-              .validate()) {
-            Navigator
-                .pushNamed(
-                    context,
-                    '/home');
+          if (formKey.currentState!.validate()) {
+            context.read<LoginCubit>().login(
+                  emailController.text.trim(),
+                  passController.text.trim(),
+                );
           }
         },
         child:

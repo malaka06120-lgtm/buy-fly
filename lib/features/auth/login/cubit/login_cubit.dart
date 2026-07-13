@@ -1,42 +1,38 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gigastore/data/models/auth_model.dart';
+import 'package:gigastore/data/repositories/auth_repo.dart';
 import 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit() : super(LoginInitial());
+  final AuthRepo authRepo;
 
-  Future<void> login(
-      String email,
-      String password) async {
+  LoginCubit(this.authRepo) : super(LoginInitial());
 
-    if (email.isEmpty ||
-        !email.contains("@")) {
-      emit(LoginError("Invalid email"));
+  Future<void> login(String email, String password) async {
+    /// Validation
+    if (email.isEmpty || !email.contains("@")) {
+      emit(LoginError("Enter valid email"));
       return;
     }
 
     if (password.length < 6) {
-      emit(LoginError(
-          "Password too short"));
+      emit(LoginError("Password must be at least 6 characters"));
       return;
     }
 
     try {
       emit(LoginLoading());
 
-      await Future.delayed(
-          const Duration(seconds: 2));
+      await authRepo.login(
+        model: AuthModel(
+          email: email,
+          password: password,
+        ),
+      );
 
-      if (email ==
-              "test@test.com" &&
-          password == "123456") {
-        emit(LoginSuccess());
-      } else {
-        emit(LoginError(
-            "Wrong email or password"));
-      }
+      emit(LoginSuccess());
     } catch (e) {
-      emit(LoginError(
-          "Something went wrong"));
+      emit(LoginError("Wrong email or password"));
     }
   }
 }

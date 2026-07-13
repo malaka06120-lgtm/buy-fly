@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "674474309531",
+    "project_id": "buy-and-fly-88c0e",
+    "storage_bucket": "buy-and-fly-88c0e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674474309531:android:6ae08510322acb12c2533e",
+        "android_client_info": {
+          "package_name": "com.example.gigastore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxJyr8athPQj_-X3W5cjKRYTTGdGGn7tc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

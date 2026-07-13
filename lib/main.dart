@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gigastore/features/auth/forgot_password_screen.dart';
@@ -11,9 +12,14 @@ import 'features/home/cubit/home_cubit.dart';
 import 'data/repositories/product_repository.dart';
 import 'data/services/api_service.dart';
 import 'package:gigastore/features/cart/cubit/cart_cubit.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

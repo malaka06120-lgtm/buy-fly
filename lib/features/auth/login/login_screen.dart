@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gigastore/core/constants/colors.dart';
+import 'package:gigastore/data/repositories/auth_repo.dart';
+import 'package:gigastore/features/auth/login/cubit/login_cubit.dart';
+import 'package:gigastore/features/auth/login/cubit/login_state.dart';
 
 import 'widgets/login_email_field.dart';
 import 'widgets/login_password_field.dart';
@@ -26,7 +30,9 @@ class _LoginScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocProvider(
+  create: (context) => LoginCubit(AuthRepo()),
+  child: Scaffold(
       backgroundColor:
           AppColors.white,
       body: Padding(
@@ -34,6 +40,18 @@ class _LoginScreenState
             const EdgeInsets.all(20),
         child:
             SingleChildScrollView(
+              child: BlocListener<LoginCubit, LoginState>(
+              listener: (context, state) {
+                if (state is LoginSuccess) {
+                  Navigator.pushReplacementNamed(context, "/home");
+                }
+
+                if (state is LoginError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(state.message)),
+                  );
+                }
+              },
           child: Form(
             key: _formKey,
             child: Column(
@@ -93,8 +111,11 @@ class _LoginScreenState
                     height: 10),
 
                 LoginButton(
-                    formKey:
-                        _formKey),
+                  formKey: _formKey,
+                  emailController: emailController,
+                  passController: passController,
+                ),
+
 
                 const SizedBox(
                     height: 15),
@@ -116,6 +137,6 @@ class _LoginScreenState
           ),
         ),
       ),
-    );
+    )));
   }
 }
